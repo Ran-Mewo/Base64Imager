@@ -5,6 +5,9 @@ const app = express();
 app.get("/", (req, res) => res.send("owolewd"));
 
 async function getBase64(base64: string) {
+    // Remove file extension if present
+    base64 = base64.replace(/\.[0-9a-z]+$/i, '');
+
     if (base64.startsWith("http")) {
         return await fetchies(base64).then(res => res.text());
     }
