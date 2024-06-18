@@ -2,8 +2,6 @@ const fetchies = require('node-fetch');
 const express = require("express");
 const app = express();
 
-console.log(encodeURIComponent("https://pastebin.com/raw/adRXHXNB"))
-
 app.get("/", (req, res) => res.send("owolewd"));
 
 async function getBase64(base64: string) {
@@ -38,5 +36,4 @@ app.get('/imagebase64/:base64', async function (req, res) {
     res.end(imageBuffer);
 });
 
-// app.listen(3000, () => console.log("Server ready on port 3001."));
 module.exports = app;
