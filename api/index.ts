@@ -35,9 +35,22 @@ app.get('/imagebase64/:base64', async function (req, res) {
     res.writeHead(200, {
         'Content-Type': mimeType,
         'Content-Length': imageBuffer.length,
-        'Content-Disposition': `attachment; filename="image.${mimeType.split('/')[1]}"`
     });
     res.end(imageBuffer);
+});
+
+app.get("/imgur/:data", async function (req, res) {
+    const imgurResponse = await fetchies('https://api.imgur.com/3/image', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Client-ID ${process.env.IMGUR_CLIENT_ID}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            image: decodeURIComponent(req.params.data)
+        })
+    });
+    res.send((await imgurResponse.json()).data.link);
 });
 
 module.exports = app;
