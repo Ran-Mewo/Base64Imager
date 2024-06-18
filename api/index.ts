@@ -59,6 +59,7 @@ app.post("/imgur", async function (req, res) {
         try {
             req.body = JSON.parse(req.body);
         } catch (e) {
+            console.error(req.body);
             return res.status(400).send('Invalid JSON body');
         }
     }
