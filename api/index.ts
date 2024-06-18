@@ -1,5 +1,6 @@
 const fetchies = require('node-fetch');
 const express = require("express");
+const bodyParser = require('body-parser');
 const app = express();
 
 app.get("/", (req, res) => res.send("owolewd"));
@@ -54,9 +55,10 @@ app.get("/imgur/:data", async function (req, res) {
     res.send((await imgurResponse.json()).data.link);
 });
 
-app.post("/imgur", async function (req, res) {
-    console.log(req)
-    let base64Image = JSON.parse(req.text).image;
+app.post("/imgur", bodyParser.json(), async function (req, res) {
+    console.log(req.body)
+    // let base64Image = req.body.image;
+    let base64Image = req.body.image;
     const imgurClientID = process.env.IMGUR_CLIENT_ID;
     const mimeMatch = base64Image.match(/^data:(.*?);base64,/);
 
