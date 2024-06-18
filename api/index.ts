@@ -82,7 +82,7 @@ app.post("/imgur", express.json(), async function (req, res) {
     if (imgurResponse.ok) {
         res.send(imgurJson.data.link);
     } else {
-        res.status(imgurResponse.status).send(imgurJson);
+        res.status(imgurResponse.status).send(`IMGUR ERROR\nFor image:\n${base64Image}\nGot Response:\n${imgurJson}`);
     }
 });
 
