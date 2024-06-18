@@ -2,8 +2,6 @@ const fetchies = require('node-fetch');
 const express = require("express");
 const app = express();
 
-app.use(express.json());
-
 app.get("/", (req, res) => res.send("owolewd"));
 
 async function getBase64(base64: string) {
@@ -56,9 +54,9 @@ app.get("/imgur/:data", async function (req, res) {
     res.send((await imgurResponse.json()).data.link);
 });
 
-// Remember to remove the express.json() middleware when deploying in localhost (It's a vercel quirk that gave me so much headache)
-app.post("/imgur", express.json(), async function (req, res) {
-    let base64Image = req.body.image;
+// Remember to remove the express.urlencoded() middleware when deploying in localhost (It's a vercel quirk that gave me so much headache)
+app.post("/imgur", express.urlencoded({extended: false}), async function (req, res) {
+    let base64Image = decodeURIComponent(req.body.image);
     const imgurClientID = process.env.IMGUR_CLIENT_ID;
     const mimeMatch = base64Image.match(/^data:(.*?);base64,/);
 
