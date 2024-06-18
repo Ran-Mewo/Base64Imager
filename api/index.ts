@@ -2,6 +2,8 @@ const fetchies = require('node-fetch');
 const express = require("express");
 const app = express();
 
+app.use(express.json());
+
 app.get("/", (req, res) => res.send("owolewd"));
 
 async function getBase64(base64: string) {
