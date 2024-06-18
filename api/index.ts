@@ -55,16 +55,8 @@ app.get("/imgur/:data", async function (req, res) {
 });
 
 app.post("/imgur", async function (req, res) {
-    if (typeof req.body !== 'object') {
-        try {
-            req.body = JSON.parse(req.body);
-        } catch (e) {
-            console.error(req.body);
-            return res.status(400).send('Invalid JSON body');
-        }
-    }
-    console.log(req.body);
-    let base64Image = req.body.image;
+    console.log(req)
+    let base64Image = JSON.parse(req.text).image;
     const imgurClientID = process.env.IMGUR_CLIENT_ID;
     const mimeMatch = base64Image.match(/^data:(.*?);base64,/);
 
