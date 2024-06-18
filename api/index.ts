@@ -54,4 +54,35 @@ app.get("/imgur/:data", async function (req, res) {
     res.send((await imgurResponse.json()).data.link);
 });
 
+app.post("/imgur", async function (req, res) {
+    let base64Image = req.body.image;
+    const imgurClientID = process.env.IMGUR_CLIENT_ID;
+    const mimeMatch = base64Image.match(/^data:(.*?);base64,/);
+
+    if (mimeMatch) {
+        const base64Prefix = `data:${mimeMatch[1]};base64,`;
+        if (base64Image.startsWith(base64Prefix)) {
+            base64Image = base64Image.slice(base64Prefix.length);
+        }
+    }
+
+    const imgurResponse = await fetchies('https://api.imgur.com/3/image', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Client-ID ${imgurClientID}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            image: base64Image
+        })
+    });
+    const imgurJson = await imgurResponse.json();
+
+    if (imgurResponse.ok) {
+        res.send(imgurJson.data.link);
+    } else {
+        res.status(imgurResponse.status).send(imgurJson);
+    }
+});
+
 module.exports = app;
