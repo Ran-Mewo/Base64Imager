@@ -34,7 +34,8 @@ app.get('/imagebase64/:base64', async function (req, res) {
 
     res.writeHead(200, {
         'Content-Type': mimeType,
-        'Content-Length': imageBuffer.length
+        'Content-Length': imageBuffer.length,
+        'Content-Disposition': `attachment; filename="image.${mimeType.split('/')[1]}"`
     });
     res.end(imageBuffer);
 });
